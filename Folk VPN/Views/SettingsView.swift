@@ -11,9 +11,12 @@ struct SettingsView: View {
     var onDismiss: () -> Void
 
     @State private var showDNSPicker = false
+    @State private var showProtocolPicker = false
     @AppStorage(DNSOption.storageKey) private var dnsRaw: String = DNSOption.automatic.rawValue
+    @AppStorage(VPNProtocolOption.storageKey) private var protocolRaw: String = VPNProtocolOption.automatic.rawValue
 
     private var currentDNS: DNSOption { DNSOption(rawValue: dnsRaw) ?? .automatic }
+    private var currentProtocol: VPNProtocolOption { VPNProtocolOption(rawValue: protocolRaw) ?? .automatic }
 
     // TODO: replace with the real Terms URL when available.
     private let privacyURL = URL(string: "https://anantkrsingh.github.io/react-native-openvpn/public/privacy-policy.html")!
@@ -36,8 +39,8 @@ struct SettingsView: View {
                                 // TODO
                             }
                             SettingsRowDivider()
-                            SettingsRow(title: "Protocol") {
-                                // TODO
+                            SettingsRow(title: "Protocol", value: currentProtocol.name) {
+                                showProtocolPicker = true
                             }
                             SettingsRowDivider()
                             SettingsRow(title: "DNS", value: currentDNS.name) {
@@ -73,6 +76,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showDNSPicker) {
             DNSPickerView(onDismiss: { showDNSPicker = false })
+        }
+        .sheet(isPresented: $showProtocolPicker) {
+            ProtocolPickerView(onDismiss: { showProtocolPicker = false })
         }
     }
 
