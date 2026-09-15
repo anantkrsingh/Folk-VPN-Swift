@@ -172,7 +172,7 @@ private struct ServerRow: View {
     }
 
     private var rowFill: Color {
-        Color.appSurfaceElevated
+        Color.white
     }
 
     private var borderColor: Color {

@@ -71,7 +71,7 @@ struct PrivacyView: View {
                             .frame(maxWidth: .infinity, minHeight: 52)
                             .background(
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(Color.appSurfaceElevated)
+                                    .fill(Color.white)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -125,11 +125,15 @@ private struct RejectSheet: View {
                 Button(action: onDismiss) {
                     Text(showingExitGuidance ? "Go back" : "Dismiss")
                         .font(.geist(.headline, weight: .semibold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.black)
                         .frame(maxWidth: .infinity, minHeight: 48)
                         .background(
                             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(Color.black)
+                                .fill(Color.white)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .stroke(Color.appBorder, lineWidth: 1)
                         )
                         .shadowXS()
                 }
@@ -145,7 +149,7 @@ private struct RejectSheet: View {
                             .frame(maxWidth: .infinity, minHeight: 48)
                             .background(
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(Color.appSurfaceElevated)
+                                    .fill(Color.white)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)

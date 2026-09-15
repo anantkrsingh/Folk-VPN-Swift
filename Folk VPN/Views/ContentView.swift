@@ -89,17 +89,10 @@ struct ContentView: View {
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(.black)
                     .frame(width: 42, height: 42)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(Color.appSurfaceElevated)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .stroke(Color.appBorder, lineWidth: 1)
-                    )
-                    .shadowXS()
+                    .contentShape(Circle())
             }
             .buttonStyle(.plain)
+            .glassEffect(.regular, in: .circle)
         }
     }
 
@@ -205,7 +198,7 @@ struct ContentView: View {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color.appSurfaceElevated)
+                    .fill(Color.white)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
