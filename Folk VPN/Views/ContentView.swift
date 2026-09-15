@@ -85,16 +85,16 @@ struct ContentView: View {
                 Circle()
                     .fill(centerFill)
                     .frame(width: 220, height: 220)
-                    .shadow(color: shadowColor, radius: 30, y: 8)
+                    .shadow(color: buttonShadowColor, radius: 30, y: 8)
 
                 if isConnected {
                     Circle()
                         .fill(
                             RadialGradient(
                                 colors: [
-                                    Color(red: 0.55, green: 1.00, blue: 0.65),
-                                    Color(red: 0.25, green: 0.85, blue: 0.45),
-                                    Color(red: 0.10, green: 0.55, blue: 0.25)
+                                    Color(red: 0.65, green: 1.00, blue: 0.75),
+                                    Color(red: 0.30, green: 0.90, blue: 0.55),
+                                    Color(red: 0.20, green: 0.80, blue: 0.45)
                                 ],
                                 center: .center,
                                 startRadius: 0,
@@ -190,6 +190,13 @@ struct ContentView: View {
         case .dark: return Color.black.opacity(0.5)
         default: return Color.black.opacity(0.18)
         }
+    }
+
+    private var buttonShadowColor: Color {
+        if isConnected {
+            return Color(red: 0.30, green: 0.90, blue: 0.55).opacity(0.55)
+        }
+        return shadowColor
     }
 
     private var mapTint: Color {
