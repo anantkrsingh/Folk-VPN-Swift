@@ -86,30 +86,24 @@ struct PrivacyView: View {
                     .font(.geist(.headline, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, minHeight: 56)
+                    .background(
+                        RoundedRectangle(cornerRadius: 22, style: .continuous)
+                            .fill(Color.accentColor)
+                    )
             }
             .buttonStyle(.plain)
-            .background(
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .fill(Color.accentColor)
-            )
-            .glassEffect(
-                .regular.tint(.accentColor).interactive(),
-                in: .rect(cornerRadius: 22)
-            )
-            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
 
             Button(action: onReject) {
                 Text("Reject")
                     .font(.geist(.headline, weight: .medium))
                     .foregroundStyle(.primary)
                     .frame(maxWidth: .infinity, minHeight: 56)
+                    .background(
+                        RoundedRectangle(cornerRadius: 22, style: .continuous)
+                            .stroke(Color.primary.opacity(0.28), lineWidth: 1)
+                    )
             }
             .buttonStyle(.plain)
-            .glassEffect(
-                .regular.interactive(),
-                in: .rect(cornerRadius: 22)
-            )
-            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
         }
     }
 }
