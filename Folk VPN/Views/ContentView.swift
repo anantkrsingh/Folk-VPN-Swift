@@ -55,17 +55,16 @@ struct ContentView: View {
                         .fill(
                             RadialGradient(
                                 colors: [
-                                    Color.green.opacity(0.75),
-                                    Color.green.opacity(0.35),
-                                    Color.green.opacity(0.0)
+                                    Color(red: 0.55, green: 1.00, blue: 0.65),
+                                    Color(red: 0.25, green: 0.85, blue: 0.45),
+                                    Color(red: 0.10, green: 0.55, blue: 0.25)
                                 ],
                                 center: .center,
-                                startRadius: 4,
+                                startRadius: 0,
                                 endRadius: 110
                             )
                         )
                         .frame(width: 220, height: 220)
-                        .blur(radius: 6)
                         .transition(.opacity)
                 }
 
@@ -90,10 +89,10 @@ struct ContentView: View {
                     .transition(.opacity)
                 }
 
-                Image(systemName: isConnected ? "lock.open.fill" : "lock.fill")
+                Image(systemName: isConnected ? "lock.fill" : "lock.open.fill")
                     .font(.system(size: 68, weight: .medium))
-                    .foregroundStyle(iconColor)
-                    .shadow(color: isConnected ? Color.green.opacity(0.7) : .clear, radius: 12)
+                    .foregroundStyle(isConnected ? .white : iconColor)
+                    .shadow(color: isConnected ? Color.black.opacity(0.35) : .clear, radius: 10, y: 2)
             }
         }
         .buttonStyle(.plain)
