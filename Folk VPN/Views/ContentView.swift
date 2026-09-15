@@ -17,12 +17,12 @@ struct ContentView: View {
             VStack(spacing: 24) {
                 Image(systemName: "globe")
                     .imageScale(.large)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .font(.system(size: 44))
 
                 Text(statusText)
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 Picker("Server", selection: $controller.selectedServer) {
                     ForEach(controller.servers) { server in
@@ -31,7 +31,7 @@ struct ContentView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                .tint(.white)
+                .tint(.accentColor)
 
                 Button(action: toggleConnection) {
                     Text(buttonTitle)
@@ -40,13 +40,12 @@ struct ContentView: View {
                         .padding(.vertical, 6)
                 }
                 .buttonStyle(.glassProminent)
-                .tint(Color(red: 0.35, green: 0.45, blue: 0.95))
+                .tint(.accentColor)
                 .disabled(isTransitioning)
                 .padding(.horizontal, 24)
             }
             .padding()
         }
-        .preferredColorScheme(.dark)
     }
 
     private var statusText: String {

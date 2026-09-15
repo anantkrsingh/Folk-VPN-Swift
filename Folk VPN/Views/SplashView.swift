@@ -17,23 +17,21 @@ struct SplashView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 96, height: 96)
-                    .foregroundStyle(.white)
-                    .shadow(color: Color.white.opacity(0.35), radius: 24)
+                    .foregroundStyle(.primary)
+                    .shadow(color: Color.accentColor.opacity(0.35), radius: 24)
 
                 Text("Folk VPN")
                     .font(.system(size: 28, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 ProgressView()
-                    .tint(.white)
                     .padding(.top, 8)
 
                 Text("Initializing…")
                     .font(.footnote)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .foregroundStyle(.secondary)
             }
         }
-        .preferredColorScheme(.dark)
     }
 }
 

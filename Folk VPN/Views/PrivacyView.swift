@@ -23,7 +23,7 @@ struct PrivacyView: View {
 
                 Text("We value your privacy")
                     .font(.title2.weight(.semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 VStack(spacing: 14) {
                     Text("That’s why we want to be transparent about what data you agree to give us. Folk VPN only collects the bare minimum of information required to offer a smooth and stable VPN experience.")
@@ -35,10 +35,10 @@ struct PrivacyView: View {
                     Text("Select **“Customize”** to manage your privacy choices or learn more about each option.")
                 }
                 .font(.callout)
-                .foregroundStyle(.white.opacity(0.85))
+                .foregroundStyle(.primary.opacity(0.85))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
-                .tint(Color(red: 0.65, green: 0.75, blue: 1.0))
+                .tint(.accentColor)
 
                 Spacer()
 
@@ -50,7 +50,7 @@ struct PrivacyView: View {
                             .padding(.vertical, 6)
                     }
                     .buttonStyle(.glassProminent)
-                    .tint(Color(red: 0.35, green: 0.45, blue: 0.95))
+                    .tint(.accentColor)
 
                     Button(action: onReject) {
                         Text("Reject")
@@ -63,7 +63,7 @@ struct PrivacyView: View {
                     Button(action: onCustomize) {
                         Text("Customize")
                             .font(.subheadline.weight(.medium))
-                            .foregroundStyle(Color(red: 0.75, green: 0.80, blue: 1.0))
+                            .foregroundStyle(Color.accentColor)
                             .padding(.top, 4)
                     }
                     .buttonStyle(.plain)
@@ -72,7 +72,6 @@ struct PrivacyView: View {
                 .padding(.bottom, 24)
             }
         }
-        .preferredColorScheme(.dark)
     }
 }
 
