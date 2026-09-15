@@ -11,7 +11,7 @@ import SwiftUI
 struct Folk_VPNApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }

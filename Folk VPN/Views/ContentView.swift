@@ -11,30 +11,42 @@ struct ContentView: View {
     @State private var controller = VPNController()
 
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+        ZStack {
+            GlowingMoonBackground()
 
-            Text(statusText)
-                .font(.headline)
+            VStack(spacing: 24) {
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 44))
 
-            Picker("Server", selection: $controller.selectedServer) {
-                ForEach(controller.servers) { server in
-                    Text("\(server.name) (\(server.countryCode))")
-                        .tag(Optional(server))
+                Text(statusText)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+
+                Picker("Server", selection: $controller.selectedServer) {
+                    ForEach(controller.servers) { server in
+                        Text("\(server.name) (\(server.countryCode))")
+                            .tag(Optional(server))
+                    }
                 }
-            }
-            .pickerStyle(.menu)
+                .pickerStyle(.menu)
+                .tint(.white)
 
-            Button(action: toggleConnection) {
-                Text(buttonTitle)
-                    .frame(maxWidth: .infinity)
+                Button(action: toggleConnection) {
+                    Text(buttonTitle)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                }
+                .buttonStyle(.glassProminent)
+                .tint(Color(red: 0.35, green: 0.45, blue: 0.95))
+                .disabled(isTransitioning)
+                .padding(.horizontal, 24)
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(isTransitioning)
+            .padding()
         }
-        .padding()
+        .preferredColorScheme(.dark)
     }
 
     private var statusText: String {
