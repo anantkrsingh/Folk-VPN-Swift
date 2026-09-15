@@ -49,7 +49,7 @@ struct DNSPickerView: View {
             Spacer()
 
             Button(action: onDismiss) {
-                Image(systemName: "xmark")
+                Image(systemName: "checkmark")
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(.black)
                     .frame(width: 36, height: 36)
