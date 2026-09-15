@@ -10,7 +10,7 @@ import SwiftUI
 struct PrivacyView: View {
     var onAccept: () -> Void
 
-    @State private var showRejectAlert = false
+    @State private var showRejectSheet = false
 
     private static let privacyURL = URL(string: "https://anantkrsingh.github.io/react-native-openvpn/public/privacy-policy.html")!
 
@@ -62,7 +62,7 @@ struct PrivacyView: View {
                     )
 
                     Button {
-                        showRejectAlert = true
+                        showRejectSheet = true
                     } label: {
                         Text("Reject")
                             .font(.geist(.headline, weight: .medium))
@@ -80,11 +80,70 @@ struct PrivacyView: View {
             .padding(.horizontal, 24)
             .padding(.vertical, 24)
         }
-        .alert("Privacy Policy Required", isPresented: $showRejectAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("We can’t proceed without your agreement to the Privacy Policy. Please tap Accept to continue using Folk VPN.")
+        .sheet(isPresented: $showRejectSheet) {
+            RejectSheet(
+                onDismiss: { showRejectSheet = false },
+                onLeave: { exit(0) }
+            )
+            .presentationDetents([.height(320)])
+            .presentationDragIndicator(.visible)
+            .presentationBackground(.thinMaterial)
+            .presentationCornerRadius(28)
         }
+    }
+}
+
+private struct RejectSheet: View {
+    var onDismiss: () -> Void
+    var onLeave: () -> Void
+
+    var body: some View {
+        VStack(spacing: 20) {
+            VStack(spacing: 10) {
+                Text("Are you sure you want to exit?")
+                    .font(.geist(.title3, weight: .semibold))
+                    .foregroundStyle(.primary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("In accordance with user data protection, we can’t provide our services without your consent.")
+                    .font(.geist(.callout))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+
+            VStack(spacing: 12) {
+                Button(action: onDismiss) {
+                    Text("Dismiss")
+                        .font(.geist(.headline, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, minHeight: 52)
+                }
+                .buttonStyle(.plain)
+                .glassEffect(
+                    .regular.tint(.accentColor).interactive(),
+                    in: .rect(cornerRadius: 20)
+                )
+
+                Button(action: onLeave) {
+                    Text("Leave anyway")
+                        .font(.geist(.headline, weight: .medium))
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, minHeight: 52)
+                }
+                .buttonStyle(.plain)
+                .glassEffect(
+                    .regular.interactive(),
+                    in: .rect(cornerRadius: 20)
+                )
+            }
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 28)
+        .padding(.bottom, 24)
     }
 }
 
