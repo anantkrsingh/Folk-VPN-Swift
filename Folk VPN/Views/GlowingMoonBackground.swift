@@ -11,13 +11,12 @@ struct GlowingMoonBackground: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        ZStack(alignment: .top) {
-            LinearGradient(
-                colors: baseColors,
-                startPoint: .top,
-                endPoint: .bottom
-            )
-
+        LinearGradient(
+            colors: baseColors,
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .overlay(alignment: .top) {
             Circle()
                 .fill(
                     RadialGradient(
@@ -30,13 +29,17 @@ struct GlowingMoonBackground: View {
                 .frame(width: 560, height: 560)
                 .blur(radius: 70)
                 .offset(x: -30, y: -260)
-
+                .allowsHitTesting(false)
+        }
+        .overlay(alignment: .top) {
             Circle()
                 .fill(accentGlowColor)
                 .frame(width: 320, height: 320)
                 .blur(radius: 110)
                 .offset(x: 140, y: -80)
+                .allowsHitTesting(false)
         }
+        .clipped()
         .ignoresSafeArea()
     }
 
@@ -85,11 +88,17 @@ struct GlowingMoonBackground: View {
 }
 
 #Preview("Dark") {
-    GlowingMoonBackground()
-        .preferredColorScheme(.dark)
+    ZStack {
+        GlowingMoonBackground()
+        Text("Content").foregroundStyle(.primary)
+    }
+    .preferredColorScheme(.dark)
 }
 
 #Preview("Light") {
-    GlowingMoonBackground()
-        .preferredColorScheme(.light)
+    ZStack {
+        GlowingMoonBackground()
+        Text("Content").foregroundStyle(.primary)
+    }
+    .preferredColorScheme(.light)
 }
