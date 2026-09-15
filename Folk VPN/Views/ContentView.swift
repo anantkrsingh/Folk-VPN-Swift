@@ -129,7 +129,6 @@ struct ContentView: View {
                 Image(systemName: isConnected ? "lock.fill" : "lock.open.fill")
                     .font(.system(size: 68, weight: .medium))
                     .foregroundStyle(isConnected ? .white : iconColor)
-                    .shadow(color: isConnected ? Color.black.opacity(0.35) : .clear, radius: 10, y: 2)
             }
         }
         .buttonStyle(.plain)
