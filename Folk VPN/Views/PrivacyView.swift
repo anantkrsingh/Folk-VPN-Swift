@@ -9,7 +9,8 @@ import SwiftUI
 
 struct PrivacyView: View {
     var onAccept: () -> Void
-    var onReject: () -> Void
+
+    @State private var showRejectAlert = false
 
     private static let privacyURL = URL(string: "https://anantkrsingh.github.io/react-native-openvpn/public/privacy-policy.html")!
 
@@ -60,7 +61,9 @@ struct PrivacyView: View {
                         in: .rect(cornerRadius: 22)
                     )
 
-                    Button(action: onReject) {
+                    Button {
+                        showRejectAlert = true
+                    } label: {
                         Text("Reject")
                             .font(.geist(.headline, weight: .medium))
                             .foregroundStyle(.primary)
@@ -77,9 +80,14 @@ struct PrivacyView: View {
             .padding(.horizontal, 24)
             .padding(.vertical, 24)
         }
+        .alert("Privacy Policy Required", isPresented: $showRejectAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("We can’t proceed without your agreement to the Privacy Policy. Please tap Accept to continue using Folk VPN.")
+        }
     }
 }
 
 #Preview {
-    PrivacyView(onAccept: {}, onReject: {})
+    PrivacyView(onAccept: {})
 }

@@ -17,11 +17,8 @@ struct RootView: View {
                 SplashView()
                     .transition(.opacity)
             case .privacy:
-                PrivacyView(
-                    onAccept: appController.acceptPrivacy,
-                    onReject: appController.rejectPrivacy
-                )
-                .transition(.opacity)
+                PrivacyView(onAccept: appController.acceptPrivacy)
+                    .transition(.opacity)
             case .ready:
                 ContentView()
                     .transition(.opacity)

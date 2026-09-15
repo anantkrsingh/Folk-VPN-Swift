@@ -30,8 +30,4 @@ final class AppController {
         UserDefaults.standard.set(true, forKey: privacyAcceptedKey)
         phase = .ready
     }
-
-    func rejectPrivacy() {
-        UserDefaults.standard.set(false, forKey: privacyAcceptedKey)
-    }
 }
