@@ -13,7 +13,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            GlowingMoonBackground(mood: isConnected ? .connected : .standard)
+            GlowingMoonBackground()
 
             Image("WorldMap")
                 .resizable()
