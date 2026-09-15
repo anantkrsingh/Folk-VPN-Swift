@@ -20,11 +20,13 @@ struct ContentView: View {
                 .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(mapTint)
+                .scaleEffect(1.9, anchor: .top)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .offset(y: -60)
-                .opacity(0.22)
+                .offset(y: 40)
+                .opacity(0.20)
                 .allowsHitTesting(false)
-                .ignoresSafeArea(edges: .horizontal)
+                .clipped()
+                .ignoresSafeArea()
 
             VStack(spacing: 32) {
                 header
