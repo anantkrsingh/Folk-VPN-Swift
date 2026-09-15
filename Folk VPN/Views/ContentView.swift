@@ -50,6 +50,25 @@ struct ContentView: View {
                     .frame(width: 220, height: 220)
                     .shadow(color: shadowColor, radius: 30, y: 8)
 
+                if isConnected {
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [
+                                    Color.green.opacity(0.75),
+                                    Color.green.opacity(0.35),
+                                    Color.green.opacity(0.0)
+                                ],
+                                center: .center,
+                                startRadius: 4,
+                                endRadius: 110
+                            )
+                        )
+                        .frame(width: 220, height: 220)
+                        .blur(radius: 6)
+                        .transition(.opacity)
+                }
+
                 Circle()
                     .stroke(Color.white, lineWidth: 8)
                     .frame(width: 220, height: 220)
@@ -58,22 +77,15 @@ struct ContentView: View {
                     TimelineView(.animation) { context in
                         let angle = context.date.timeIntervalSinceReferenceDate.remainder(dividingBy: 1.4) / 1.4 * 360
                         Circle()
-                            .trim(from: 0, to: 0.32)
+                            .trim(from: 0, to: 0.5)
                             .stroke(
-                                AngularGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.accentColor.opacity(0),
-                                        Color.accentColor.opacity(0.4),
-                                        Color.accentColor
-                                    ]),
-                                    center: .center
-                                ),
+                                Color.accentColor,
                                 style: StrokeStyle(lineWidth: 8, lineCap: .round)
                             )
                             .frame(width: 220, height: 220)
                             .rotationEffect(.degrees(angle))
                             .shadow(color: Color.accentColor.opacity(0.9), radius: 8)
-                            .shadow(color: Color.accentColor.opacity(0.55), radius: 18)
+                            .shadow(color: Color.accentColor.opacity(0.55), radius: 20)
                     }
                     .transition(.opacity)
                 }
@@ -81,11 +93,13 @@ struct ContentView: View {
                 Image(systemName: isConnected ? "lock.open.fill" : "lock.fill")
                     .font(.system(size: 68, weight: .medium))
                     .foregroundStyle(iconColor)
+                    .shadow(color: isConnected ? Color.green.opacity(0.7) : .clear, radius: 12)
             }
         }
         .buttonStyle(.plain)
         .disabled(isTransitioning)
-        .animation(.easeInOut(duration: 0.25), value: isTransitioning)
+        .animation(.easeInOut(duration: 0.35), value: isTransitioning)
+        .animation(.easeInOut(duration: 0.35), value: isConnected)
     }
 
     private var serverChip: some View {
