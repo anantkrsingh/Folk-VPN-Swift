@@ -47,29 +47,45 @@ struct ContentView: View {
             ZStack {
                 Circle()
                     .fill(centerFill)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white, lineWidth: 8)
-                    )
                     .frame(width: 220, height: 220)
                     .shadow(color: shadowColor, radius: 30, y: 8)
 
-                Group {
-                    if isTransitioning {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .scaleEffect(1.6)
-                            .tint(iconColor)
-                    } else {
-                        Image(systemName: isConnected ? "lock.open.fill" : "lock.fill")
-                            .font(.system(size: 68, weight: .medium))
-                            .foregroundStyle(iconColor)
+                Circle()
+                    .stroke(Color.white, lineWidth: 8)
+                    .frame(width: 220, height: 220)
+
+                if isTransitioning {
+                    TimelineView(.animation) { context in
+                        let angle = context.date.timeIntervalSinceReferenceDate.remainder(dividingBy: 1.4) / 1.4 * 360
+                        Circle()
+                            .trim(from: 0, to: 0.32)
+                            .stroke(
+                                AngularGradient(
+                                    gradient: Gradient(colors: [
+                                        Color.accentColor.opacity(0),
+                                        Color.accentColor.opacity(0.4),
+                                        Color.accentColor
+                                    ]),
+                                    center: .center
+                                ),
+                                style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                            )
+                            .frame(width: 220, height: 220)
+                            .rotationEffect(.degrees(angle))
+                            .shadow(color: Color.accentColor.opacity(0.9), radius: 8)
+                            .shadow(color: Color.accentColor.opacity(0.55), radius: 18)
                     }
+                    .transition(.opacity)
                 }
+
+                Image(systemName: isConnected ? "lock.open.fill" : "lock.fill")
+                    .font(.system(size: 68, weight: .medium))
+                    .foregroundStyle(iconColor)
             }
         }
         .buttonStyle(.plain)
         .disabled(isTransitioning)
+        .animation(.easeInOut(duration: 0.25), value: isTransitioning)
     }
 
     private var serverChip: some View {
