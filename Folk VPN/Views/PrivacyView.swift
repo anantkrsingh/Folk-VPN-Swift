@@ -81,32 +81,32 @@ struct PrivacyView: View {
             .padding(.vertical, 24)
         }
         .sheet(isPresented: $showRejectSheet) {
-            RejectSheet(
-                onDismiss: { showRejectSheet = false },
-                onLeave: { exit(0) }
-            )
-            .presentationDetents([.height(320)])
-            .presentationDragIndicator(.visible)
-            .presentationBackground(.thinMaterial)
-            .presentationCornerRadius(28)
+            RejectSheet(onDismiss: { showRejectSheet = false })
+                .presentationDetents([.height(360)])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(.thinMaterial)
+                .presentationCornerRadius(28)
         }
     }
 }
 
 private struct RejectSheet: View {
     var onDismiss: () -> Void
-    var onLeave: () -> Void
+
+    @State private var showingExitGuidance = false
 
     var body: some View {
         VStack(spacing: 20) {
             VStack(spacing: 10) {
-                Text("Are you sure you want to exit?")
+                Text(showingExitGuidance ? "Close Folk VPN to exit" : "Are you sure you want to exit?")
                     .font(.geist(.title3, weight: .semibold))
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Text("In accordance with user data protection, we can’t provide our services without your consent.")
+                Text(showingExitGuidance
+                     ? "Swipe up from the bottom of the screen to close Folk VPN. Reopen the app and tap Accept whenever you’re ready to continue."
+                     : "In accordance with user data protection, we can’t provide our services without your consent.")
                     .font(.geist(.callout))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -117,7 +117,7 @@ private struct RejectSheet: View {
 
             VStack(spacing: 12) {
                 Button(action: onDismiss) {
-                    Text("Dismiss")
+                    Text(showingExitGuidance ? "Go back" : "Dismiss")
                         .font(.geist(.headline, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, minHeight: 52)
@@ -128,22 +128,27 @@ private struct RejectSheet: View {
                     in: .rect(cornerRadius: 20)
                 )
 
-                Button(action: onLeave) {
-                    Text("Leave anyway")
-                        .font(.geist(.headline, weight: .medium))
-                        .foregroundStyle(.red)
-                        .frame(maxWidth: .infinity, minHeight: 52)
+                if !showingExitGuidance {
+                    Button {
+                        showingExitGuidance = true
+                    } label: {
+                        Text("Leave anyway")
+                            .font(.geist(.headline, weight: .medium))
+                            .foregroundStyle(.red)
+                            .frame(maxWidth: .infinity, minHeight: 52)
+                    }
+                    .buttonStyle(.plain)
+                    .glassEffect(
+                        .regular.interactive(),
+                        in: .rect(cornerRadius: 20)
+                    )
                 }
-                .buttonStyle(.plain)
-                .glassEffect(
-                    .regular.interactive(),
-                    in: .rect(cornerRadius: 20)
-                )
             }
         }
         .padding(.horizontal, 24)
         .padding(.top, 28)
         .padding(.bottom, 24)
+        .animation(.easeInOut(duration: 0.25), value: showingExitGuidance)
     }
 }
 
