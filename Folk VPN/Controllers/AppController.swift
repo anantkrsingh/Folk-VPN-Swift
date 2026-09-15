@@ -19,6 +19,8 @@ final class AppController {
     private(set) var phase: Phase = .launching
     private(set) var publicKeyBase64: String?
 
+    let vpnController = VPNController()
+
     private let privacyAcceptedKey = "folkvpn.hasAcceptedPrivacy"
 
     func start() async {
@@ -27,7 +29,9 @@ final class AppController {
         }.value
         publicKeyBase64 = keys.publicKeyBase64
 
-        try? await Task.sleep(nanoseconds: 1_400_000_000)
+        async let servers: Void = vpnController.loadServers()
+        async let minimum: Void = minimumSplashDelay()
+        _ = await (servers, minimum)
 
         let accepted = UserDefaults.standard.bool(forKey: privacyAcceptedKey)
         phase = accepted ? .ready : .privacy
@@ -36,5 +40,9 @@ final class AppController {
     func acceptPrivacy() {
         UserDefaults.standard.set(true, forKey: privacyAcceptedKey)
         phase = .ready
+    }
+
+    private func minimumSplashDelay() async {
+        try? await Task.sleep(nanoseconds: 1_400_000_000)
     }
 }

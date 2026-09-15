@@ -20,7 +20,7 @@ struct RootView: View {
                 PrivacyView(onAccept: appController.acceptPrivacy)
                     .transition(.opacity)
             case .ready:
-                ContentView()
+                ContentView(controller: appController.vpnController)
                     .transition(.opacity)
             }
         }

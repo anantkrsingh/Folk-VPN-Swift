@@ -7,18 +7,16 @@
 
 import Foundation
 
-struct VPNServer: Identifiable, Hashable {
-    let id: UUID
-    let name: String
-    let countryCode: String
-    let host: String
-    let port: Int
+struct VPNServer: Identifiable, Hashable, Decodable {
+    let id: Int
+    let ip: String
+    let region: String
+    let serverType: String
+    let country: Country
+    let protocols: [String]
 
-    init(id: UUID = UUID(), name: String, countryCode: String, host: String, port: Int) {
-        self.id = id
-        self.name = name
-        self.countryCode = countryCode
-        self.host = host
-        self.port = port
+    struct Country: Hashable, Decodable {
+        let name: String
+        let flagUrl: URL
     }
 }

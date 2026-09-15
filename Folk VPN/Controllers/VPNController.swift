@@ -12,19 +12,23 @@ import Observation
 final class VPNController {
     private(set) var state: VPNConnectionState = .disconnected
     private(set) var servers: [VPNServer] = []
+    private(set) var isLoadingServers = false
+    private(set) var loadError: String?
     var selectedServer: VPNServer?
 
-    init() {
-        loadServers()
-    }
-
-    func loadServers() {
-        servers = [
-            VPNServer(name: "New York", countryCode: "US", host: "us-ny.folkvpn.net", port: 1194),
-            VPNServer(name: "London", countryCode: "GB", host: "uk-lon.folkvpn.net", port: 1194),
-            VPNServer(name: "Tokyo", countryCode: "JP", host: "jp-tky.folkvpn.net", port: 1194)
-        ]
-        selectedServer = servers.first
+    func loadServers() async {
+        isLoadingServers = true
+        loadError = nil
+        do {
+            let list = try await ServerService.fetchServers()
+            self.servers = list
+            if selectedServer == nil || !list.contains(where: { $0.id == selectedServer?.id }) {
+                self.selectedServer = list.first
+            }
+        } catch {
+            self.loadError = (error as? APIError)?.errorDescription ?? error.localizedDescription
+        }
+        isLoadingServers = false
     }
 
     func connect() async {

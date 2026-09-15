@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var controller = VPNController()
+    @Bindable var controller: VPNController
+    @State private var showServerSheet = false
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -55,6 +56,23 @@ struct ContentView: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 24)
+        }
+        .sheet(isPresented: $showServerSheet) {
+            ServerListSheet(
+                servers: controller.servers,
+                selectedID: controller.selectedServer?.id,
+                isLoading: controller.isLoadingServers,
+                errorMessage: controller.loadError,
+                onSelect: { server in
+                    controller.selectedServer = server
+                    showServerSheet = false
+                },
+                onRetry: { await controller.loadServers() }
+            )
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+            .presentationBackground(.thinMaterial)
+            .presentationCornerRadius(28)
         }
     }
 
@@ -138,23 +156,35 @@ struct ContentView: View {
     }
 
     private var serverChip: some View {
-        Menu {
-            ForEach(controller.servers) { server in
-                Button {
-                    controller.selectedServer = server
-                } label: {
-                    Text("\(server.name) (\(server.countryCode))")
-                }
-            }
+        Button {
+            showServerSheet = true
         } label: {
-            HStack(spacing: 10) {
-                Image(systemName: "globe")
-                    .font(.system(size: 14, weight: .medium))
+            HStack(spacing: 12) {
+                if let selected = controller.selectedServer {
+                    AsyncImage(url: selected.country.flagUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().scaledToFill()
+                        case .empty:
+                            Color.gray.opacity(0.15)
+                        case .failure:
+                            Image(systemName: "flag.slash").foregroundStyle(.secondary)
+                        @unknown default:
+                            Color.gray.opacity(0.15)
+                        }
+                    }
+                    .frame(width: 32, height: 22)
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                } else {
+                    Image(systemName: "globe")
+                        .font(.system(size: 14, weight: .medium))
+                }
+
                 VStack(alignment: .leading, spacing: 1) {
                     Text("Selected server")
                         .font(.geist(.caption))
                         .foregroundStyle(.secondary)
-                    Text(controller.selectedServer.map { "\($0.name) (\($0.countryCode))" } ?? "None")
+                    Text(selectedServerLabel)
                         .font(.geist(.subheadline, weight: .semibold))
                         .foregroundStyle(.primary)
                 }
@@ -169,6 +199,15 @@ struct ContentView: View {
         }
         .buttonStyle(.plain)
         .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 18))
+    }
+
+    private var selectedServerLabel: String {
+        if let selected = controller.selectedServer {
+            return "\(selected.country.name) — \(selected.region)"
+        }
+        if controller.isLoadingServers { return "Loading…" }
+        if controller.loadError != nil { return "Tap to retry" }
+        return "None"
     }
 
     private var centerFill: Color {
@@ -245,5 +284,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(controller: VPNController())
 }
