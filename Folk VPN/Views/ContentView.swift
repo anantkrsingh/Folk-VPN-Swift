@@ -196,9 +196,10 @@ struct ContentView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
+            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 18))
+        .glassEffect(.regular, in: .rect(cornerRadius: 18))
     }
 
     private var selectedServerLabel: String {
