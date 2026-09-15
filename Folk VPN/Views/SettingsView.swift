@@ -156,9 +156,9 @@ private struct SettingsRow: View {
 private struct SettingsRowDivider: View {
     var body: some View {
         Rectangle()
-            .fill(Color.black.opacity(0.08))
+            .fill(Color.white)
             .frame(height: 1)
-            .padding(.leading, 16)
+            .padding(.horizontal, 16)
     }
 }
 
