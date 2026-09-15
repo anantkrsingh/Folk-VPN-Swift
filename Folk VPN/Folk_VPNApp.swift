@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct Folk_VPNApp: App {
+    init() {
+        FontRegistrar.registerGeist()
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()

@@ -21,7 +21,7 @@ struct ContentView: View {
                     .font(.system(size: 44))
 
                 Text(statusText)
-                    .font(.headline)
+                    .font(.geist(.headline, weight: .semibold))
                     .foregroundStyle(.primary)
 
                 Picker("Server", selection: $controller.selectedServer) {
@@ -35,11 +35,12 @@ struct ContentView: View {
 
                 Button(action: toggleConnection) {
                     Text(buttonTitle)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6)
+                        .font(.geist(.headline, weight: .semibold))
+                        .frame(maxWidth: .infinity, minHeight: 30)
                 }
                 .buttonStyle(.glassProminent)
+                .buttonBorderShape(.roundedRectangle(radius: 18))
+                .controlSize(.large)
                 .tint(.accentColor)
                 .disabled(isTransitioning)
                 .padding(.horizontal, 24)

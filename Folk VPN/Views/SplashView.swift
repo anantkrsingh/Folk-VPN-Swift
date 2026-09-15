@@ -21,14 +21,14 @@ struct SplashView: View {
                     .shadow(color: Color.accentColor.opacity(0.35), radius: 24)
 
                 Text("Folk VPN")
-                    .font(.system(size: 28, weight: .semibold, design: .rounded))
+                    .font(.geist(28, weight: .semibold))
                     .foregroundStyle(.primary)
 
                 ProgressView()
                     .padding(.top, 8)
 
                 Text("Initializing…")
-                    .font(.footnote)
+                    .font(.geist(.footnote))
                     .foregroundStyle(.secondary)
             }
         }
