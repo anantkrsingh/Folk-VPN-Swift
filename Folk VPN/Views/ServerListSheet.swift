@@ -92,6 +92,10 @@ private struct ServerRow: View {
     let isSelected: Bool
     var onTap: () -> Void
 
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var isFree: Bool { server.serverType.lowercased() == "free" }
+
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 14) {
@@ -114,9 +118,16 @@ private struct ServerRow: View {
                 .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(server.country.name)
-                        .font(.geist(.body, weight: .semibold))
-                        .foregroundStyle(.primary)
+                    HStack(spacing: 6) {
+                        Text(server.country.name)
+                            .font(.geist(.body, weight: .semibold))
+                            .foregroundStyle(.primary)
+                        if isSelected {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(.green)
+                        }
+                    }
                     Text(server.region)
                         .font(.geist(.caption))
                         .foregroundStyle(.secondary)
@@ -124,20 +135,53 @@ private struct ServerRow: View {
 
                 Spacer()
 
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.green)
-                }
+                trailingBadge
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 14)
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(isSelected ? Color.accentColor.opacity(0.10) : Color.primary.opacity(0.03))
+                    .fill(rowFill)
             )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(borderColor, lineWidth: isSelected ? 1.5 : 1)
+            )
+            .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.35 : 0.08), radius: 8, y: 3)
             .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var trailingBadge: some View {
+        if isFree {
+            Text("FREE")
+                .font(.geist(.caption2, weight: .bold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(
+                    Capsule().fill(Color(red: 0.20, green: 0.75, blue: 0.40))
+                )
+        } else {
+            Image(systemName: "crown.fill")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(Color(red: 1.00, green: 0.78, blue: 0.20))
+        }
+    }
+
+    private var rowFill: Color {
+        switch colorScheme {
+        case .dark: return Color(red: 0.16, green: 0.16, blue: 0.20)
+        default: return Color(red: 0.94, green: 0.94, blue: 0.97)
+        }
+    }
+
+    private var borderColor: Color {
+        if isSelected { return Color.accentColor }
+        return colorScheme == .dark
+            ? Color.white.opacity(0.10)
+            : Color.black.opacity(0.08)
     }
 }
