@@ -36,10 +36,10 @@ struct ContentView: View {
                 .allowsHitTesting(false)
                 .ignoresSafeArea(edges: .horizontal)
 
-            VStack(spacing: 32) {
+            VStack(spacing: 24) {
                 header
 
-                Spacer()
+                Spacer(minLength: 24)
 
                 connectButton
 
@@ -47,7 +47,7 @@ struct ContentView: View {
                     .font(.geist(.title3, weight: .semibold))
                     .foregroundStyle(.black)
 
-                Spacer()
+                Spacer(minLength: 80)
 
                 serverChip
                     .padding(.bottom, 24)
@@ -101,8 +101,8 @@ struct ContentView: View {
             ZStack {
                 Circle()
                     .fill(Color.appSurfaceElevated)
-                    .frame(width: 220, height: 220)
-                    .shadow(color: buttonShadowColor, radius: 30, y: 8)
+                    .frame(width: 170, height: 170)
+                    .shadow(color: buttonShadowColor, radius: 24, y: 6)
 
                 if isConnected {
                     Circle()
@@ -115,16 +115,16 @@ struct ContentView: View {
                                 ],
                                 center: .center,
                                 startRadius: 0,
-                                endRadius: 110
+                                endRadius: 85
                             )
                         )
-                        .frame(width: 220, height: 220)
+                        .frame(width: 170, height: 170)
                         .transition(.opacity)
                 }
 
                 Circle()
-                    .stroke(Color.white, lineWidth: 8)
-                    .frame(width: 220, height: 220)
+                    .stroke(Color.white, lineWidth: 6)
+                    .frame(width: 170, height: 170)
 
                 if isTransitioning {
                     TimelineView(.animation) { context in
@@ -133,18 +133,18 @@ struct ContentView: View {
                             .trim(from: 0, to: 0.5)
                             .stroke(
                                 Color.accentColor,
-                                style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                                style: StrokeStyle(lineWidth: 6, lineCap: .round)
                             )
-                            .frame(width: 220, height: 220)
+                            .frame(width: 170, height: 170)
                             .rotationEffect(.degrees(angle))
-                            .shadow(color: Color.accentColor.opacity(0.9), radius: 8)
-                            .shadow(color: Color.accentColor.opacity(0.55), radius: 20)
+                            .shadow(color: Color.accentColor.opacity(0.9), radius: 6)
+                            .shadow(color: Color.accentColor.opacity(0.55), radius: 16)
                     }
                     .transition(.opacity)
                 }
 
                 Image(systemName: isConnected ? "lock.fill" : "lock.open.fill")
-                    .font(.system(size: 68, weight: .medium))
+                    .font(.system(size: 52, weight: .medium))
                     .foregroundStyle(isConnected ? .white : .black)
             }
         }
