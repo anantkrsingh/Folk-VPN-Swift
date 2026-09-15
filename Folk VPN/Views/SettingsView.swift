@@ -10,6 +10,11 @@ import SwiftUI
 struct SettingsView: View {
     var onDismiss: () -> Void
 
+    @State private var showDNSPicker = false
+    @AppStorage(DNSOption.storageKey) private var dnsRaw: String = DNSOption.automatic.rawValue
+
+    private var currentDNS: DNSOption { DNSOption(rawValue: dnsRaw) ?? .automatic }
+
     // TODO: replace with the real Terms URL when available.
     private let privacyURL = URL(string: "https://anantkrsingh.github.io/react-native-openvpn/public/privacy-policy.html")!
     private let termsURL = URL(string: "https://anantkrsingh.github.io/react-native-openvpn/public/terms.html")!
@@ -35,8 +40,8 @@ struct SettingsView: View {
                                 // TODO
                             }
                             SettingsRowDivider()
-                            SettingsRow(title: "DNS") {
-                                // TODO
+                            SettingsRow(title: "DNS", value: currentDNS.name) {
+                                showDNSPicker = true
                             }
                         }
 
@@ -65,6 +70,9 @@ struct SettingsView: View {
                     .foregroundStyle(.black.opacity(0.5))
                     .padding(.bottom, 24)
             }
+        }
+        .sheet(isPresented: $showDNSPicker) {
+            DNSPickerView(onDismiss: { showDNSPicker = false })
         }
     }
 
