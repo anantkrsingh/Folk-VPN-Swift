@@ -10,26 +10,26 @@ import SwiftUI
 struct SplashView: View {
     var body: some View {
         ZStack {
-            GlowingMoonBackground()
+            AppBackground()
 
             VStack(spacing: 20) {
                 Image(systemName: "shield.lefthalf.filled")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 96, height: 96)
-                    .foregroundStyle(.primary)
-                    .shadow(color: Color.accentColor.opacity(0.35), radius: 24)
+                    .foregroundStyle(.black)
 
                 Text("Folk VPN")
                     .font(.geist(28, weight: .semibold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.black)
 
                 ProgressView()
+                    .tint(.black)
                     .padding(.top, 8)
 
                 Text("Initializing…")
                     .font(.geist(.footnote))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.black.opacity(0.6))
             }
         }
     }

@@ -16,7 +16,7 @@ struct PrivacyView: View {
 
     var body: some View {
         ZStack {
-            GlowingMoonBackground()
+            AppBackground()
 
             VStack(spacing: 32) {
                 Spacer()
@@ -24,13 +24,13 @@ struct PrivacyView: View {
                 VStack(spacing: 16) {
                     Text("We value your privacy")
                         .font(.geist(28, weight: .bold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.black)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
 
                     Text("Folk VPN keeps your browsing activity private and only collects the bare minimum of information required to offer a smooth, stable, and secure connection. By tapping Accept, you allow limited app performance data to be used for analytics and diagnostics, as explained in our Privacy Policy.")
                         .font(.geist(.callout))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.black.opacity(0.7))
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
                         .fixedSize(horizontal: false, vertical: true)
@@ -48,32 +48,38 @@ struct PrivacyView: View {
 
                 Spacer()
 
-                VStack(spacing: 14) {
+                VStack(spacing: 12) {
                     Button(action: onAccept) {
                         Text("Accept")
                             .font(.geist(.headline, weight: .semibold))
                             .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity, minHeight: 56)
+                            .frame(maxWidth: .infinity, minHeight: 52)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(Color.black)
+                            )
+                            .shadowXS()
                     }
                     .buttonStyle(.plain)
-                    .glassEffect(
-                        .regular.tint(.accentColor).interactive(),
-                        in: .rect(cornerRadius: 22)
-                    )
 
                     Button {
                         showRejectSheet = true
                     } label: {
                         Text("Reject")
                             .font(.geist(.headline, weight: .medium))
-                            .foregroundStyle(.primary)
-                            .frame(maxWidth: .infinity, minHeight: 56)
+                            .foregroundStyle(.black)
+                            .frame(maxWidth: .infinity, minHeight: 52)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(Color.appSurfaceElevated)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(Color.appBorder, lineWidth: 1)
+                            )
+                            .shadowXS()
                     }
                     .buttonStyle(.plain)
-                    .glassEffect(
-                        .regular.interactive(),
-                        in: .rect(cornerRadius: 22)
-                    )
                 }
                 .padding(.bottom, 12)
             }
@@ -84,7 +90,7 @@ struct PrivacyView: View {
             RejectSheet(onDismiss: { showRejectSheet = false })
                 .presentationDetents([.height(360)])
                 .presentationDragIndicator(.visible)
-                .presentationBackground(.thinMaterial)
+                .presentationBackground(Color.appSurface)
                 .presentationCornerRadius(28)
         }
     }
@@ -100,7 +106,7 @@ private struct RejectSheet: View {
             VStack(spacing: 10) {
                 Text(showingExitGuidance ? "Close Folk VPN to exit" : "Are you sure you want to exit?")
                     .font(.geist(.title3, weight: .semibold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.black)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
 
@@ -108,7 +114,7 @@ private struct RejectSheet: View {
                      ? "Swipe up from the bottom of the screen to close Folk VPN. Reopen the app and tap Accept whenever you’re ready to continue."
                      : "In accordance with user data protection, we can’t provide our services without your consent.")
                     .font(.geist(.callout))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.black.opacity(0.7))
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -120,13 +126,14 @@ private struct RejectSheet: View {
                     Text(showingExitGuidance ? "Go back" : "Dismiss")
                         .font(.geist(.headline, weight: .semibold))
                         .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity, minHeight: 52)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(Color.black)
+                        )
+                        .shadowXS()
                 }
                 .buttonStyle(.plain)
-                .glassEffect(
-                    .regular.tint(.accentColor).interactive(),
-                    in: .rect(cornerRadius: 20)
-                )
 
                 if !showingExitGuidance {
                     Button {
@@ -135,13 +142,18 @@ private struct RejectSheet: View {
                         Text("Leave anyway")
                             .font(.geist(.headline, weight: .medium))
                             .foregroundStyle(.red)
-                            .frame(maxWidth: .infinity, minHeight: 52)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(Color.appSurfaceElevated)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(Color.appBorder, lineWidth: 1)
+                            )
+                            .shadowXS()
                     }
                     .buttonStyle(.plain)
-                    .glassEffect(
-                        .regular.interactive(),
-                        in: .rect(cornerRadius: 20)
-                    )
                 }
             }
         }

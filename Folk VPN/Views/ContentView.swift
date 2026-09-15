@@ -10,17 +10,16 @@ import SwiftUI
 struct ContentView: View {
     @Bindable var controller: VPNController
     @State private var showServerSheet = false
-    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         ZStack {
-            GlowingMoonBackground()
+            AppBackground()
 
             Image("WorldMap")
                 .resizable()
                 .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
-                .foregroundStyle(mapTint)
+                .foregroundStyle(Color.black.opacity(0.18))
                 .mask(
                     LinearGradient(
                         gradient: Gradient(stops: [
@@ -34,7 +33,6 @@ struct ContentView: View {
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .offset(y: -60)
-                .opacity(0.22)
                 .allowsHitTesting(false)
                 .ignoresSafeArea(edges: .horizontal)
 
@@ -47,7 +45,7 @@ struct ContentView: View {
 
                 Text(statusText)
                     .font(.geist(.title3, weight: .semibold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.black)
 
                 Spacer()
 
@@ -71,7 +69,7 @@ struct ContentView: View {
             )
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
-            .presentationBackground(.thinMaterial)
+            .presentationBackground(Color.appSurface)
             .presentationCornerRadius(28)
         }
     }
@@ -80,7 +78,7 @@ struct ContentView: View {
         HStack {
             Text("Folk VPN")
                 .font(.geist(.title2, weight: .semibold))
-                .foregroundStyle(.primary)
+                .foregroundStyle(.black)
 
             Spacer()
 
@@ -89,11 +87,19 @@ struct ContentView: View {
             } label: {
                 Image(systemName: "gearshape.fill")
                     .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.black)
                     .frame(width: 42, height: 42)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(Color.appSurfaceElevated)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .stroke(Color.appBorder, lineWidth: 1)
+                    )
+                    .shadowXS()
             }
             .buttonStyle(.plain)
-            .glassEffect(.regular.interactive(), in: .circle)
         }
     }
 
@@ -101,7 +107,7 @@ struct ContentView: View {
         Button(action: toggleConnection) {
             ZStack {
                 Circle()
-                    .fill(centerFill)
+                    .fill(Color.appSurfaceElevated)
                     .frame(width: 220, height: 220)
                     .shadow(color: buttonShadowColor, radius: 30, y: 8)
 
@@ -146,7 +152,7 @@ struct ContentView: View {
 
                 Image(systemName: isConnected ? "lock.fill" : "lock.open.fill")
                     .font(.system(size: 68, weight: .medium))
-                    .foregroundStyle(isConnected ? .white : iconColor)
+                    .foregroundStyle(isConnected ? .white : .black)
             }
         }
         .buttonStyle(.plain)
@@ -168,7 +174,7 @@ struct ContentView: View {
                         case .empty:
                             Color.gray.opacity(0.15)
                         case .failure:
-                            Image(systemName: "flag.slash").foregroundStyle(.secondary)
+                            Image(systemName: "flag.slash").foregroundStyle(.black.opacity(0.6))
                         @unknown default:
                             Color.gray.opacity(0.15)
                         }
@@ -178,28 +184,37 @@ struct ContentView: View {
                 } else {
                     Image(systemName: "globe")
                         .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.black)
                 }
 
                 VStack(alignment: .leading, spacing: 1) {
                     Text("Selected server")
                         .font(.geist(.caption))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.black.opacity(0.6))
                     Text(selectedServerLabel)
                         .font(.geist(.subheadline, weight: .semibold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.black)
                 }
                 Spacer()
                 Image(systemName: "chevron.up.chevron.down")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.black.opacity(0.6))
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
-            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .background(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(Color.appSurfaceElevated)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(Color.appBorder, lineWidth: 1)
+            )
+            .shadowXS()
+            .contentShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular, in: .rect(cornerRadius: 18))
     }
 
     private var selectedServerLabel: String {
@@ -211,43 +226,11 @@ struct ContentView: View {
         return "None"
     }
 
-    private var centerFill: Color {
-        switch colorScheme {
-        case .dark: return Color(red: 0.14, green: 0.14, blue: 0.18)
-        default: return Color(red: 0.90, green: 0.90, blue: 0.93)
-        }
-    }
-
-    private var iconColor: Color {
-        switch colorScheme {
-        case .dark: return .white.opacity(0.9)
-        default: return Color(red: 0.20, green: 0.22, blue: 0.28)
-        }
-    }
-
-    private var shadowColor: Color {
-        switch colorScheme {
-        case .dark: return Color.black.opacity(0.5)
-        default: return Color.black.opacity(0.18)
-        }
-    }
-
     private var buttonShadowColor: Color {
         if isConnected {
             return Color(red: 0.30, green: 0.90, blue: 0.55).opacity(0.55)
         }
-        return shadowColor
-    }
-
-    private var mapTint: Color {
-        if isConnected {
-            return colorScheme == .dark
-                ? Color(red: 0.55, green: 0.95, blue: 0.65)
-                : Color(red: 0.25, green: 0.65, blue: 0.35)
-        }
-        return colorScheme == .dark
-            ? Color.white
-            : Color(red: 0.25, green: 0.30, blue: 0.40)
+        return Color.black.opacity(0.10)
     }
 
     private var statusText: String {

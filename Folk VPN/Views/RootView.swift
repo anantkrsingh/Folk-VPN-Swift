@@ -26,6 +26,7 @@ struct RootView: View {
         }
         .animation(.easeInOut(duration: 0.35), value: appController.phase)
         .task { await appController.start() }
+        .preferredColorScheme(.light)
     }
 }
 

@@ -147,7 +147,7 @@ private struct ServerRow: View {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .stroke(borderColor, lineWidth: isSelected ? 1.5 : 1)
             )
-            .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.35 : 0.08), radius: 8, y: 3)
+            .shadowXS()
             .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(.plain)
@@ -172,16 +172,10 @@ private struct ServerRow: View {
     }
 
     private var rowFill: Color {
-        switch colorScheme {
-        case .dark: return Color(red: 0.16, green: 0.16, blue: 0.20)
-        default: return Color(red: 0.94, green: 0.94, blue: 0.97)
-        }
+        Color.appSurfaceElevated
     }
 
     private var borderColor: Color {
-        if isSelected { return Color.accentColor }
-        return colorScheme == .dark
-            ? Color.white.opacity(0.10)
-            : Color.black.opacity(0.08)
+        isSelected ? Color.accentColor : Color.appBorder
     }
 }
