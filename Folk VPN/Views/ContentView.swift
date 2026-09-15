@@ -37,9 +37,24 @@ struct ContentView: View {
     }
 
     private var header: some View {
-        Text("Folk VPN")
-            .font(.geist(.title2, weight: .semibold))
-            .foregroundStyle(.primary)
+        HStack {
+            Text("Folk VPN")
+                .font(.geist(.title2, weight: .semibold))
+                .foregroundStyle(.primary)
+
+            Spacer()
+
+            Button {
+                // TODO: present settings
+            } label: {
+                Image(systemName: "gearshape.fill")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundStyle(.primary)
+                    .frame(width: 42, height: 42)
+            }
+            .buttonStyle(.plain)
+            .glassEffect(.regular.interactive(), in: .circle)
+        }
     }
 
     private var connectButton: some View {
