@@ -20,13 +20,22 @@ struct ContentView: View {
                 .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(mapTint)
-                .scaleEffect(1.9, anchor: .top)
+                .mask(
+                    LinearGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: .black, location: 0.0),
+                            .init(color: .black, location: 0.55),
+                            .init(color: .clear, location: 1.0)
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .offset(y: 40)
-                .opacity(0.20)
+                .offset(y: -60)
+                .opacity(0.22)
                 .allowsHitTesting(false)
-                .clipped()
-                .ignoresSafeArea()
+                .ignoresSafeArea(edges: .horizontal)
 
             VStack(spacing: 32) {
                 header
