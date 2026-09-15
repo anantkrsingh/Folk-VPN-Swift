@@ -13,7 +13,17 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            GlowingMoonBackground()
+            GlowingMoonBackground(mood: isConnected ? .connected : .standard)
+
+            Image("WorldMap")
+                .resizable()
+                .renderingMode(.template)
+                .aspectRatio(contentMode: .fit)
+                .foregroundStyle(mapTint)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 16)
+                .opacity(0.22)
+                .allowsHitTesting(false)
 
             VStack(spacing: 32) {
                 header
@@ -169,6 +179,17 @@ struct ContentView: View {
         case .dark: return Color.black.opacity(0.5)
         default: return Color.black.opacity(0.18)
         }
+    }
+
+    private var mapTint: Color {
+        if isConnected {
+            return colorScheme == .dark
+                ? Color(red: 0.55, green: 0.95, blue: 0.65)
+                : Color(red: 0.25, green: 0.65, blue: 0.35)
+        }
+        return colorScheme == .dark
+            ? Color.white
+            : Color(red: 0.25, green: 0.30, blue: 0.40)
     }
 
     private var statusText: String {
