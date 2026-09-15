@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Bindable var controller: VPNController
     @State private var showServerSheet = false
+    @State private var showSettings = false
 
     var body: some View {
         ZStack {
@@ -55,6 +56,9 @@ struct ContentView: View {
             .padding(.horizontal, 24)
             .padding(.top, 24)
         }
+        .sheet(isPresented: $showSettings) {
+            SettingsView(onDismiss: { showSettings = false })
+        }
         .sheet(isPresented: $showServerSheet) {
             ServerListSheet(
                 servers: controller.servers,
@@ -83,7 +87,7 @@ struct ContentView: View {
             Spacer()
 
             Button {
-                // TODO: present settings
+                showSettings = true
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 18, weight: .medium))
