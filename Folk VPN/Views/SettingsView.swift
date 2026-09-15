@@ -25,30 +25,35 @@ struct SettingsView: View {
                     .padding(.bottom, 16)
 
                 ScrollView {
-                    VStack(spacing: 10) {
-                        SettingsRow(icon: "arrow.triangle.branch", title: "Split Tunneling") {
-                            // TODO: present split tunneling
-                        }
-                        SettingsRow(icon: "lock.shield", title: "Protocol") {
-                            // TODO: present protocol picker
-                        }
-                        SettingsRow(icon: "envelope", title: "Contact") {
-                            // TODO: present contact
-                        }
-                        SettingsRow(icon: "network", title: "DNS") {
-                            // TODO: present DNS
+                    VStack(spacing: 16) {
+                        GroupedCard {
+                            SettingsRow(title: "Split Tunneling") {
+                                // TODO
+                            }
+                            SettingsRowDivider()
+                            SettingsRow(title: "Protocol") {
+                                // TODO
+                            }
+                            SettingsRowDivider()
+                            SettingsRow(title: "DNS") {
+                                // TODO
+                            }
                         }
 
-                        Rectangle()
-                            .fill(Color.appBorder)
-                            .frame(height: 1)
-                            .padding(.vertical, 6)
-
-                        SettingsRow(icon: "hand.raised", title: "Privacy Policy", isExternal: true) {
-                            UIApplication.shared.open(privacyURL)
+                        GroupedCard {
+                            SettingsRow(title: "Contact") {
+                                // TODO
+                            }
                         }
-                        SettingsRow(icon: "doc.text", title: "Terms", isExternal: true) {
-                            UIApplication.shared.open(termsURL)
+
+                        GroupedCard {
+                            SettingsRow(title: "Privacy Policy", isExternal: true) {
+                                UIApplication.shared.open(privacyURL)
+                            }
+                            SettingsRowDivider()
+                            SettingsRow(title: "Terms", isExternal: true) {
+                                UIApplication.shared.open(termsURL)
+                            }
                         }
                     }
                     .padding(.horizontal, 20)
@@ -90,8 +95,18 @@ struct SettingsView: View {
     }
 }
 
+private struct GroupedCard<Content: View>: View {
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content
+        }
+        .glassEffect(.regular, in: .rect(cornerRadius: 14))
+    }
+}
+
 private struct SettingsRow: View {
-    let icon: String
     let title: String
     var value: String? = nil
     var isExternal: Bool = false
@@ -99,12 +114,7 @@ private struct SettingsRow: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 14) {
-                Image(systemName: icon)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.black)
-                    .frame(width: 24, height: 24)
-
+            HStack(spacing: 12) {
                 Text(title)
                     .font(.geist(.body, weight: .medium))
                     .foregroundStyle(.black)
@@ -122,19 +132,19 @@ private struct SettingsRow: View {
                     .foregroundStyle(.black.opacity(0.4))
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.white)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(Color.appBorder, lineWidth: 1)
-            )
-            .shadowXS()
-            .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .padding(.vertical, 15)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+    }
+}
+
+private struct SettingsRowDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(Color.black.opacity(0.08))
+            .frame(height: 1)
+            .padding(.leading, 16)
     }
 }
 
