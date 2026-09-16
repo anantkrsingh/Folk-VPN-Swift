@@ -27,6 +27,7 @@ final class APIClient {
     private let baseURL = URL(string: "https://api-folk.anantkr.com/api")!
     private let session: URLSession
     private let decoder: JSONDecoder
+    private let encoder = JSONEncoder()
 
     init() {
         let config = URLSessionConfiguration.default
@@ -40,11 +41,26 @@ final class APIClient {
     }
 
     func get<T: Decodable>(_ path: String, as type: T.Type = T.self) async throws -> T {
-        let url = baseURL.appendingPathComponent(path)
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: baseURL.appendingPathComponent(path))
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        return try await perform(request)
+    }
 
+    func post<Body: Encodable, T: Decodable>(_ path: String, body: Body, as type: T.Type = T.self) async throws -> T {
+        var request = URLRequest(url: baseURL.appendingPathComponent(path))
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            request.httpBody = try encoder.encode(body)
+        } catch {
+            throw APIError.decoding(error)
+        }
+        return try await perform(request)
+    }
+
+    private func perform<T: Decodable>(_ request: URLRequest) async throws -> T {
         let data: Data
         let response: URLResponse
         do {

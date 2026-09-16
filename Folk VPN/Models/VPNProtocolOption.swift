@@ -38,4 +38,31 @@ enum VPNProtocolOption: String, CaseIterable, Identifiable {
             return "Advanced protocol with strong obfuscation. Best for heavily censored networks."
         }
     }
+
+    static var current: VPNProtocolOption {
+        let raw = UserDefaults.standard.string(forKey: storageKey) ?? automatic.rawValue
+        return VPNProtocolOption(rawValue: raw) ?? .automatic
+    }
+
+    /// Automatic never connects using itself — resolves to a concrete protocol based
+    /// on the device's region, the same way the Android app's HomeViewModel.
+    /// resolveProtocol() does (some regions are known to actively block plain
+    /// WireGuard).
+    func resolved() -> VPNProtocolOption {
+        guard self == .automatic else { return self }
+        let censoredRegions: Set<String> = ["RU", "IR", "BY", "MM", "TR", "AE", "TM", "IQ"]
+        let region = Locale.current.region?.identifier.uppercased() ?? ""
+        return censoredRegions.contains(region) ? .amneziawg : .wireguard
+    }
+
+    /// The value sent as the `protocol` field of a conf-request. Only meaningful on a
+    /// resolved (non-automatic) option.
+    var backendValue: String {
+        switch self {
+        case .automatic: return VPNProtocolOption.wireguard.backendValue
+        case .wireguard: return "WIREGUARD"
+        case .amneziawg: return "AMNEZIA"
+        case .xray: return "XRAY"
+        }
+    }
 }

@@ -17,6 +17,8 @@ struct VPNServer: Identifiable, Hashable, Decodable {
 
     struct Country: Hashable, Decodable {
         let name: String
-        let flagUrl: URL
+        // The backend has sent a literal null here for at least one real server —
+        // must stay optional or decoding the whole server list throws.
+        let flagUrl: URL?
     }
 }

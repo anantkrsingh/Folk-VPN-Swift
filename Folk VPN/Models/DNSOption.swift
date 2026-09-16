@@ -52,4 +52,15 @@ enum DNSOption: String, CaseIterable, Identifiable {
         case .quad9: return ["9.9.9.9", "149.112.112.112"]
         }
     }
+
+    static var current: DNSOption {
+        let raw = UserDefaults.standard.string(forKey: storageKey) ?? automatic.rawValue
+        return DNSOption(rawValue: raw) ?? .automatic
+    }
+
+    /// The single DNS IP sent as the `dns` field of a conf-request; defaults to
+    /// Cloudflare's 1.1.1.1 for Automatic, since the backend always expects a value.
+    var primaryDNS: String {
+        servers.first ?? "1.1.1.1"
+    }
 }
